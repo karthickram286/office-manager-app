@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Badge, FormGroup, FormControl, FormLabel, FormCheck } from 'react-bootstrap';
+import { Button, Badge, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 import './styles/employee.styles.css';
@@ -21,6 +21,24 @@ class DeleteEmployee extends React.Component {
       [event.target.id]: event.target.value,
       status: ''
     });
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    let empl_id = this.state.empl_id;
+    
+    axios.delete('/api/empl/' + empl_id)
+      .then((response) => {
+        this.setState({ 
+          status: response.data.message
+        })
+      })
+      .catch(error => {
+        this.setState({ 
+          status: error.response.data.errMessage 
+        })
+      });
   }
 
   validateForm() {

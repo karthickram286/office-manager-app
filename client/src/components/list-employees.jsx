@@ -55,6 +55,7 @@ class ListEmployees extends React.Component {
                 <th>Position</th>
                 <th>Supervisor</th>
                 <th>Creation Date</th>
+                <th>Supervisor ID</th>
               </tr>
             </thead>
             <tbody>
@@ -67,6 +68,7 @@ class ListEmployees extends React.Component {
                     <td>{ empl.position }</td>
                     <td>{ empl.is_supervisor ? "Yes" : "No" }</td>
                     <td>{ empl.creation_date.split('T')[0] }</td>
+                    <td><center>{ empl.supervisor_id ? empl.supervisor_id : "NA"}</center></td>
                   </tr>
                 )})
               }
