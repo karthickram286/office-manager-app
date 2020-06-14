@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Navbar from './components/navbar';
 import Footer from './components/footer';
+import HomePage from './components/homepage';
 import ListEmployees from './components/list-employees';
 import AddEmployee from './components/add-employee';
 import LinkEmployees from './components/link-employees';
@@ -18,6 +19,7 @@ function App() {
 
       <Navbar />
       <Switch>
+        <Route exact path="/" component={ HomePage } />
         <Route exact path="/list" component={ ListEmployees } />
         <Route exact path="/add" component={ AddEmployee } />
         <Route exact path="/link" component={ LinkEmployees } />

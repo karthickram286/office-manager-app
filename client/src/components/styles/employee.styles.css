@@ -7,6 +7,15 @@
   max-width: 400px;
 }
 
+.listempl {
+  padding: 50px 0;
+}
+
+.listempl table {
+  margin: 0 auto;
+  max-width: 1500px;
+}
+
 .delempl {
   padding: 100px 0;
 }

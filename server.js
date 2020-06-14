@@ -1,14 +1,25 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const connectDB = require('./lib/connection/db.connect');
 const emplRoutes = require('./lib/routes/employee.routes');
 
 const app = express();
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
+
+/**
+ * Rate limiting config
+ */
+const rateLimiter = rateLimit({
+  max: 500,
+  windowMs: 60 * 60 * 1000, // 1 hour  
+  message: "Too many requests from this IP, Please try after some time."
+});
 
 app.use(cors());
+app.use(rateLimiter);
 app.use(express.json({ extended: false }));
 
 /**
