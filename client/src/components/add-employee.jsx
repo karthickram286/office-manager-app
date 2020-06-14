@@ -1,5 +1,9 @@
 import React from 'react';
-import { Button, FormGroup, FormControl, FormLabel, Badge } from 'react-bootstrap';
+import axios from 'axios';
+import { Button, Badge, FormGroup, FormControl, FormLabel, FormCheck } from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
+
+import './styles/employee.styles.css';
 
 class AddEmployee extends React.Component {
 
@@ -7,7 +11,12 @@ class AddEmployee extends React.Component {
     super();
 
     this.state = {
-
+      empl_id: "",
+      firstname: "",
+      lastname: "",
+      position: "CTO",
+      is_supervisor: false,
+      status: ""
     };
   }
 
@@ -18,28 +27,107 @@ class AddEmployee extends React.Component {
     });
   }
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleClick = event => {
+    this.setState({
+      [event.target.id]: event.target.checked,
+      status: ''
+    });
   }
 
-  resetStatus = () => {
-    this.setState({ status: '' });
+  handleSubmit = event => {
+    event.preventDefault();
+
+    const empl = {
+      empl_id: this.state.empl_id,
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
+      position: this.state.position,
+      is_supervisor: this.state.is_supervisor
+    }
+
+    axios.post('/api/empl/add', empl)
+      .then((response) => {
+        this.setState({ 
+          status: response.data.message
+        })
+      })
+      .catch(error => {
+        this.setState({ 
+          status: error.response.data.errMessage 
+        })
+      });
+  }
+
+  validateForm() {
+    return (this.state.empl_id.length > 0)
+      && (this.state.firstname.length > 1)
+      && (this.state.lastname.length > 0);
   }
 
   render() {
-    return(
+    return (
       <div>
-        <div className="employee-add-form">
-          <form onSubmit= { this.handleSubmit } onChange={ this.resetStatus }>
-            <FormGroup controlId="noteTitle">
-                <FormLabel color="blue">Title</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="text"
-                    value="dummy"
-                    onChange= { this.handleChange }
-                />
+        <div className="addempl">
+          <form onSubmit={this.handleSubmit}>
+            <FormGroup controlId="empl_id">
+              <FormLabel color="blue">Employee ID</FormLabel>
+              <FormControl
+                autoFocus
+                type="text"
+                value={this.state.empl_id}
+                onChange={this.handleChange}
+              />
             </FormGroup>
+
+            <FormGroup controlId="firstname">
+              <FormLabel color="blue">First Name</FormLabel>
+              <FormControl
+                autoFocus
+                type="text"
+                value={this.state.firstname}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+
+            <FormGroup controlId="lastname">
+              <FormLabel color="blue">Last Name</FormLabel>
+              <FormControl
+                autoFocus
+                type="text"
+                value={this.state.lastname}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+
+            <FormGroup controlId="position">
+              <FormLabel color="blue">Position</FormLabel>
+              <FormControl as="select" value={this.state.position} onChange={this.handleChange}>
+                <option>CEO</option>
+                <option>CTO</option>
+                <option>VP</option>
+                <option>DIRECTOR</option>
+                <option>MANAGER</option>
+                <option>TEAM_LEAD</option>
+                <option>DEVELOPER</option>
+                <option>QA</option>
+              </FormControl>
+            </FormGroup>
+
+            <FormGroup controlId="is_supervisor">
+              <FormCheck type="checkbox" label="Supervisor" value={this.state.is_supervisor} onClick={this.handleClick} />
+            </FormGroup><br />
+
+            <FormGroup>
+              <Badge variant="info">{this.state.status}</Badge>
+            </FormGroup>
+
+            <Button
+              block
+              disabled={!this.validateForm()}
+              type="submit"
+            >
+              Add
+            </Button>
           </form>
         </div>
       </div>
@@ -47,4 +135,4 @@ class AddEmployee extends React.Component {
   }
 }
 
-export default AddEmployee;
+export default withRouter(AddEmployee);

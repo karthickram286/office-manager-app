@@ -1,27 +1,30 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import {
+  Switch,
+  Route,
+} from "react-router-dom";
+import Navbar from './components/navbar';
+import Footer from './components/footer';
 import ListEmployees from './components/list-employees';
+import AddEmployee from './components/add-employee';
+import LinkEmployees from './components/link-employees';
+import DeleteEmployee from './components/delete-employee';
 
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Navbar bg="dark" variant="dark">
-        <Navbar.Brand>Office Manager Portal</Navbar.Brand>
-        <Nav className="mr-auto">
-          {/* <Switch>
-            <Route exact path="/" component= { AddEmployee } />
-          </Switch> */}
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">Features</Nav.Link>
-          <Nav.Link href="#pricing">Pricing</Nav.Link>
-        </Nav>
-      </Navbar>
 
-      <ListEmployees />
+      <Navbar />
+      <Switch>
+        <Route exact path="/list" component={ ListEmployees } />
+        <Route exact path="/add" component={ AddEmployee } />
+        <Route exact path="/link" component={ LinkEmployees } />
+        <Route exact path="/delete" component={ DeleteEmployee } />
+      </Switch>
+
+      <Footer content="© 2020 Copyright: office-manager-app.com" />
     </div>
   );
 }

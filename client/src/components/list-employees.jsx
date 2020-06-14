@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 
 class ListEmployees extends React.Component {
@@ -48,21 +49,24 @@ class ListEmployees extends React.Component {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>#</th>
+                <th>Employee ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Username</th>
+                <th>Position</th>
+                <th>Supervisor</th>
+                <th>Creation Date</th>
               </tr>
             </thead>
             <tbody>
               { 
                 this.state.employees.map(empl => {
-                  console.log(empl);
                   return (<tr key={empl.empl_id}>
-                    <td>1</td>
+                    <td>{ empl.empl_id }</td>
                     <td>{ empl.firstname }</td>
                     <td>{ empl.lastname }</td>
                     <td>{ empl.position }</td>
+                    <td>{ empl.is_supervisor ? "Yes" : "No" }</td>
+                    <td>{ empl.creation_date.split('T')[0] }</td>
                   </tr>
                 )})
               }
@@ -75,4 +79,4 @@ class ListEmployees extends React.Component {
   }
 }
 
-export default ListEmployees;
+export default withRouter(ListEmployees);
